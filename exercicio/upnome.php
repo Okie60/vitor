@@ -1,12 +1,11 @@
 <?php
-    include 'conecta.php';
-    include 'cadastro.php';
-
+    include("conecta.php");
+    $id = $_GET['id'];
     $nome = $_POST['nome'];
     $idade = $_POST['idade'];
     $altura = $_POST['altura'];
     $peso = $_POST['peso'];
-        
+
     if ($altura && $peso != null) {
         $imc = doubleval($peso) / (2 * doubleval($altura));
         $classificacao = "";
@@ -35,23 +34,16 @@
             echo"insira altura e peso";
             break;
     }
-    
 
-    $querry = $conn->query("SELECT * FROM pessoa_imc WHERE nome='$nome' AND idade='$idade' AND altura='$altura' AND peso='$peso' AND imc='$imc' AND classificacao='$classificacao'");
+    $sql = "UPDATE pessoa SET nome=?, idade=?, altura=?, peso=?, imc=?, classificacao=? WHERE id=?";
+    $update = $conn->prepare($sql) or die($conn->error);
 
-    if (mysqli_num_rows($querry) > 0) {
-        echo "<script language='javascript' type='text/javascript'>
-        alert('Nome já existe em nossa base de dados!');
-        window.location.href='cadastro.php'
-        </script>'";
-    }else {
-        $sql = "INSERT INTO pessoa_imc(nome, idade, altura, peso, imc, classificacao) VALUES ('$nome', '$idade', '$altura', '$peso', '$imc', '$classificacao')";
-        if (mysqli_query($conn, $sql)) {
-            echo "<script language='javascript' type='text/javascript'>
-            alert('Dados gravados com sucesso!');
-            window.location.href='index.php'
-            </script>'";
-        }
+    if (!$update) {
+        echo "Erro na atualização!".$conn->errno.'-'.$conn->error;
     }
-    mysqli_close($conn);
+    
+    $update->bind_param('ssddssi', $nome, $idade, $altura, $peso, $imc, $classificacao, $id);
+    $update->execute();
+    $update->close();
+    header("Location: index.php");
 ?>
