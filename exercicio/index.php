@@ -41,6 +41,7 @@
                                     echo '<td>'.$registro['peso'].'</td>';
                                     echo '<td>'.$registro['imc'].'</td>';
                                     echo '<td>'.$registro['classificacao'].'</td>';
+                                    echo '<td><a href="editar.php?id='.$id.'">Editar</a> | <a href="excluir.php?id='.$id.'">Excluir</a></td>';
                                 echo '</tr>';
                             }
                             echo '</tbody>';
