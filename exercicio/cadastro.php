@@ -24,57 +24,6 @@
                 <label class="form-floating mb-3">PESO</label>
                 <input type="float" class="form-control" name="peso" placeholder="Insira o peso" required>
                 <br>
-                <?php
-                include("conecta.php");
-            
-                $altura = $_POST['altura'];
-                $peso = $_POST['peso'];
-                $imc = $_POST['imc'];
-                $classificacao = $_POST['classificacao'];
-                    
-                    if ($altura && $peso != null) {
-                        $imc = $peso / 2*$altura;
-                        $classificacao ='';
-                    }
-
-                    switch ($classificacao) {
-                        case $imc <= 18.5:
-                            $classificacao = "abaixo do peso";
-                            break;
-                        case $imc > 18.5 & 25 > $imc:
-                            $classificacao = "eutrofia(peso adequado)";
-                            break;
-                        case $imc > 24.9 & 30 > $imc:
-                            $classificacao = "sobrepeso";
-                            break;
-                        case $imc > 29.9 & 35 > $imc:
-                            $classificacao = "obesidade grau 1";
-                            break;
-                        case $imc > 34.9 & 40 > $imc:
-                            $classificacao = "obesidade grau 2";
-                            break;
-                        case $imc >= 40:
-                            $classificacao = "obesidade extrema";
-                            break;
-                        default:
-                            echo"insira altura e peso";
-                            break;
-                    }
-                ?>
-                <br>
-                <label class="form-floating mb-3">IMC</label>
-                <br>
-                <?php
-                    echo $peso / 2*$altura;
-                ?>
-                <br>
-                <label class="form-floating mb-3">CLASSIFICAÇÃO</label>
-                <br>
-                <?php
-                    echo $classificacao;
-                ?>
-                <br>
-
                 <button type="submit" class="btn btn-outline-info">INSERIR</button>
             </form>
         </center>
