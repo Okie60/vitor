@@ -7,28 +7,31 @@
     $altura = $_POST['altura'];
     $peso = $_POST['peso'];
         
-    if ($altura && $peso != null) {
-        $imc = doubleval($peso) / (2 * doubleval($altura));
+    $altura = $_POST['altura'];
+    $peso = $_POST['peso'];
+    if ($altura && $peso != 0) {
+        $imc = $peso / (($altura/100) * 2);
         $classificacao = "";
     }
+    $resultado = round($imc,2);
 
     switch (true) {
-        case $imc <= 18.5:
+        case $resultado <= 18.5:
             $classificacao = "abaixo do peso";
             break;
-        case $imc > 18.5 && 25 > $imc:
+        case $resultado > 18.5 && 25 > $resultado:
             $classificacao = "eutrofia(peso adequado)";
             break;
-        case $imc > 24.9 && 30 > $imc:
+        case $resultado > 24.9 && 30 > $resultado:
             $classificacao = "sobrepeso";
             break;
-        case $imc > 29.9 && 35 > $imc:
+        case $resultado > 29.9 && 35 > $resultado:
             $classificacao = "obesidade grau 1";
             break;
-        case $imc > 34.9 && 40 > $imc:
+        case $resultado > 34.9 && 40 > $resultado:
             $classificacao = "obesidade grau 2";
             break;
-        case $imc >= 40:
+        case $resultado >= 40:
             $classificacao = "obesidade extrema";
             break;
         default:
@@ -37,7 +40,7 @@
     }
     
 
-    $querry = $conn->query("SELECT * FROM pessoa_imc WHERE nome='$nome' AND idade='$idade' AND altura='$altura' AND peso='$peso' AND imc='$imc' AND classificacao='$classificacao'");
+    $querry = $conn->query("SELECT * FROM pessoa_imc WHERE nome='$nome' AND idade='$idade' AND altura='$altura' AND peso='$peso' AND imc='$resultado' AND classificacao='$classificacao'");
 
     if (mysqli_num_rows($querry) > 0) {
         echo "<script language='javascript' type='text/javascript'>
@@ -45,7 +48,7 @@
         window.location.href='cadastro.php'
         </script>'";
     }else {
-        $sql = "INSERT INTO pessoa_imc(nome, idade, altura, peso, imc, classificacao) VALUES ('$nome', '$idade', '$altura', '$peso', '$imc', '$classificacao')";
+        $sql = "INSERT INTO pessoa_imc(nome, idade, altura, peso, imc, classificacao) VALUES ('$nome', '$idade', '$altura', '$peso', '$resultado', '$classificacao')";
         if (mysqli_query($conn, $sql)) {
             echo "<script language='javascript' type='text/javascript'>
             alert('Dados gravados com sucesso!');

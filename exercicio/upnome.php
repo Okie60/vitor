@@ -7,27 +7,28 @@
     $peso = $_POST['peso'];
 
     if ($altura && $peso != null) {
-        $imc = doubleval($peso) / (2 * doubleval($altura));
+        $imc = $peso / (($altura/100) * 2);
         $classificacao = "";
     }
+    $resultado = round($imc,2);
 
     switch (true) {
-        case $imc <= 18.5:
+        case $resultado <= 18.5:
             $classificacao = "abaixo do peso";
             break;
-        case $imc > 18.5 && 25 > $imc:
+        case $resultado > 18.5 && 25 > $resultado:
             $classificacao = "eutrofia(peso adequado)";
             break;
-        case $imc > 24.9 && 30 > $imc:
+        case $resultado > 24.9 && 30 > $resultado:
             $classificacao = "sobrepeso";
             break;
-        case $imc > 29.9 && 35 > $imc:
+        case $resultado > 29.9 && 35 > $resultado:
             $classificacao = "obesidade grau 1";
             break;
-        case $imc > 34.9 && 40 > $imc:
+        case $resultado > 34.9 && 40 > $resultado:
             $classificacao = "obesidade grau 2";
             break;
-        case $imc >= 40:
+        case $resultado >= 40:
             $classificacao = "obesidade extrema";
             break;
         default:
@@ -35,14 +36,14 @@
             break;
     }
 
-    $sql = "UPDATE pessoa SET nome=?, idade=?, altura=?, peso=?, imc=?, classificacao=? WHERE id=?";
+    $sql = "UPDATE pessoa_imc SET nome=?, idade=?, altura=?, peso=?, imc=?, classificacao=? WHERE id=?";
     $update = $conn->prepare($sql) or die($conn->error);
 
     if (!$update) {
         echo "Erro na atualização!".$conn->errno.'-'.$conn->error;
     }
     
-    $update->bind_param('ssddssi', $nome, $idade, $altura, $peso, $imc, $classificacao, $id);
+    $update->bind_param('ssddssi', $nome, $idade, $altura, $peso, $resultado, $classificacao, $id);
     $update->execute();
     $update->close();
     header("Location: index.php");

@@ -37,8 +37,8 @@
                                     echo '<td>'.$registro['id'].'</td>';
                                     echo '<td>'.$registro['nome'].'</td>';
                                     echo '<td>'.$registro['idade'].'</td>';
-                                    echo '<td>'.$registro['altura'].'</td>';
-                                    echo '<td>'.$registro['peso'].'</td>';
+                                    echo '<td>'.$registro['altura']."cm".'</td>';
+                                    echo '<td>'.$registro['peso']."Kg".'</td>';
                                     echo '<td>'.$registro['imc'].'</td>';
                                     echo '<td>'.$registro['classificacao'].'</td>';
                                     echo '<td><a href="editar.php?id='.$id.'">Editar</a> | <a href="excluir.php?id='.$id.'">Excluir</a></td>';
